@@ -21,16 +21,13 @@ Things that are not implemented:
 """
 
 
-class DataCatalog:
-    ...
+class DataCatalog: ...
 
 
-class ConfigLoader:
-    ...
+class ConfigLoader: ...
 
 
-class Pipeline:
-    ...
+class Pipeline: ...
 
 
 class Node:  # Maybe not needed

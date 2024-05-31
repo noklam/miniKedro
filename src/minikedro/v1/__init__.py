@@ -1,5 +1,4 @@
 from collections import UserDict
 
 
-class ConfigLoader(UserDict):
-    ...
+class ConfigLoader(UserDict): ...

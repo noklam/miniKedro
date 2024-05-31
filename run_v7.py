@@ -74,7 +74,11 @@ if __name__ == "__main__":
             node(
                 **{
                     "func": create_model_input_table,
-                    "inputs": ["shuttles", "companies", "reviews"],
+                    "inputs": [
+                        "preprocessed_shuttles",
+                        "preprocessed_companies",
+                        "reviews",
+                    ],
                     "outputs": "model_input_table",
                 }
             ),

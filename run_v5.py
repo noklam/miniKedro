@@ -68,7 +68,7 @@ if __name__ == "__main__":
         },
         {
             "func": create_model_input_table,
-            "inputs": "companies",
+            "inputs": ["preprocessed_shuttles", "preprocessed_companies", "reviews"],
             "outputs": "model_input_table",
         },
     ]

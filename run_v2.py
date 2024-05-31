@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     logger.info("Running preprocess_companies")
     processed_companies = preprocess_companies(companies)
-    logger.info("Running shuttles")
+    logger.info("Running preprocess_shuttles")
     processed_shuttles = preprocess_shuttles(shuttles)
     logger.info("Running create_model_input_table")
     model_input_table = create_model_input_table(
