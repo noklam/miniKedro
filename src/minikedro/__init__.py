@@ -1,6 +1,6 @@
 __version__ = "0.0.1"
 """minikedro
-100 lines of code
+50 lines of code
 Support:
 1. Run a pipeline (a series of functions)
 2. Run a pipeline partially (some filtering mechanism)
@@ -19,20 +19,3 @@ Things that are not implemented:
 - Credentials
 
 """
-
-
-class DataCatalog: ...
-
-
-class ConfigLoader: ...
-
-
-class Pipeline: ...
-
-
-class Node:  # Maybe not needed
-    ...
-
-
-class Hook:  # Maybe not needed
-    ...

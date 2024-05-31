@@ -1,6 +1,3 @@
-from minikedro import DataCatalog
-
-
 if __name__ == "__main__":
     print("Start Pipeline")
     from minikedro.pipelines.data_processing.nodes import (

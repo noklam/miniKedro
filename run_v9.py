@@ -1,6 +1,3 @@
-from minikedro import DataCatalog
-
-
 if __name__ == "__main__":
     print("Start Pipeline")
     from minikedro.pipelines.data_processing.nodes import (
@@ -42,6 +39,7 @@ if __name__ == "__main__":
     )
 
     hooks = Hooks([ObservabilitiyHook, AnotherObservabilitiyHook])
+    hooks = Hooks([])
 
     # Kedro Runner
     for node_ in pipeline_:
@@ -49,6 +47,7 @@ if __name__ == "__main__":
         logger.info(f"Running {func.__name__}")
 
         hooks.before_node_run()
+
         # Core node execution logic
         inputs = node_["inputs"]
         if isinstance(inputs, str):
