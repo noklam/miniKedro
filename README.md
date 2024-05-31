@@ -1,6 +1,6 @@
 # minikedro
 
-A functional minimalistic of implementation of Kedro (inspired by minGPT).
+Reimplementing something is one of the best way to learn. This is a minimalistic implementation of Kedro (inspired by minGPT by Karpathy).
 
 ## Structure
 The repository is a clone of the standard spaceflights repository with two additional files:
