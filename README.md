@@ -14,6 +14,9 @@ Each step I try to refactor part of the script and introduce a new component or 
 There is also a `dataset.ipynb` to demo how dataset works (out of scope)
 
 # How to use this repository
+First, clone this repository and install the package with:
+- `pip install -e .`
+
 Run `python run.py` and the following scripts and observe the difference between each versions.
 
 ## run.py
