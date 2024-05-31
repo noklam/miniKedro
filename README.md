@@ -17,7 +17,9 @@ There is also a `dataset.ipynb` to demo how dataset works (out of scope)
 First, clone this repository and install the package with:
 - `pip install -e .`
 
-Run `python run.py` and the following scripts and observe the difference between each versions.
+Run `python run.py` and the following scripts and observe the difference between each versions. The best way to understand the changes are open this repository in an IDE and compare the diff between different versions. For example, this is a screenshot of comparing `run_v1.py` and `run_v2.py`
+
+![diff of two run.py](assets/diff1.png)
 
 ## run.py
 The basic structure of a script without any Kedro
