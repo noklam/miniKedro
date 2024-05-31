@@ -15,9 +15,13 @@ There is also a `dataset.ipynb` to demo how dataset works (out of scope)
 
 # How to use this repository
 First, clone this repository and install the package with:
+- `git clone https://github.com/noklam/miniKedro.git`
 - `pip install -e .`
 
-Run `python run.py` and the following scripts and observe the difference between each versions. The best way to understand the changes are open this repository in an IDE and compare the diff between different versions. For example, this is a screenshot of comparing `run_v1.py` and `run_v2.py`
+Run `python run.py` and the following scripts and observe the difference between each versions.
+The repository is created incrementally, so you can view the changes clearly from the commit history: https://github.com/noklam/miniKedro/commits/main/
+
+The best way to understand the changes are open this repository in an IDE and compare the diff between different versions. For example, this is a screenshot of comparing `run_v1.py` and `run_v2.py`:
 
 ![diff of two run.py](assets/diff1.png)
 
