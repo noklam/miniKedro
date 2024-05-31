@@ -1,0 +1,31 @@
+[build-system]
+requires = [ "setuptools",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minikedro"
+readme = "README.md"
+dynamic = [ "dependencies", "version",]
+
+[project.scripts]
+minikedro = "minikedro.__main__:main"
+
+[tool.kedro]
+package_name = "minikedro"
+project_name = "minikedro"
+kedro_init_version = "0.19.6"
+tools = [ "None",]
+example_pipeline = "True"
+source_dir = "src"
+
+[project.entry-points."kedro.hooks"]
+
+[tool.setuptools.dynamic.dependencies]
+file = "requirements.txt"
+
+[tool.setuptools.dynamic.version]
+attr = "minikedro.__version__"
+
+[tool.setuptools.packages.find]
+where = [ "src",]
+namespaces = false
