@@ -16,36 +16,9 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    config = {
-        "companies": {
-            "filepath": "${_base_folder}/01_raw/companies.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "reviews": {
-            "filepath": "${_base_folder}/01_raw/reviews.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "shuttles": {
-            "filepath": "${_base_folder}/01_raw/shuttles.xlsx",
-            "type": "pandas.ExcelDataset",
-        },
-        "_base_folder": "data",
-        "preprocessed_companies": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_companies.pq",
-        },
-        "preprocessed_shuttles": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_shuttles.pq",
-        },
-        "model_input_table": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/03_primary/model_input_table.pq",
-        },
-    }
     from minikedro.v6 import ConfigLoader, DataCatalog, pipeline, node
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("src/minikedro/v6/config.yml")
     data_catalog = DataCatalog(config_loader.data)
 
     nodes = pipeline([

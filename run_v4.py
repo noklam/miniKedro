@@ -1,6 +1,3 @@
-from minikedro.v3 import DataCatalog
-
-
 if __name__ == "__main__":
     print("Start Pipeline")
     from minikedro.pipelines.data_processing.nodes import (
@@ -29,11 +26,11 @@ if __name__ == "__main__":
     data_catalog.save(processed_companies, "preprocessed_companies")
 
     logger.info("Running preprocess_shuttles")
-    processed_shuttles = preprocess_shuttles(data_catalog.load("reviews"))
+    processed_shuttles = preprocess_shuttles(data_catalog.load("shuttles"))
     data_catalog.save(processed_companies, "preprocessed_shuttles")
 
     logger.info("Running create_model_input_table")
     model_input_table = create_model_input_table(
-        processed_shuttles, processed_companies, data_catalog.load("shuttles")
+        processed_shuttles, processed_companies, data_catalog.load("reviews")
     )
     data_catalog.save(processed_companies, "model_input_table")
