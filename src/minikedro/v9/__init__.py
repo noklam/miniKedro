@@ -5,8 +5,9 @@ import importlib
 
 
 class ConfigLoader(UserDict):
-    def __init__(self, data: dict):
-        self.data = OmegaConf.create(data)
+    def __init__(self, filepath):
+        config = OmegaConf.load(filepath)
+        self.data = OmegaConf.create(config)
 
 
 class DataCatalog:
