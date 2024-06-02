@@ -1,6 +1,3 @@
-from minikedro import DataCatalog
-
-
 if __name__ == "__main__":
     print("Start Pipeline")
     from minikedro.pipelines.data_processing.nodes import (
@@ -72,15 +69,15 @@ if __name__ == "__main__":
     )
     ])
 
-    for step in steps:
-        func = step["func"]
+    for node_ in nodes:
+        func = node_["func"]
         logger.info(f"Running {func.__name__}")
-        inputs = step["inputs"]
+        inputs = node_["inputs"]
         if isinstance(inputs, str):
             inputs = [inputs]  # Make it iterable for convenience
         inputs = [data_catalog.load(input_) for input_ in inputs]
         outputs = func(*inputs)
-        data_catalog.save(outputs, step["outputs"])
+        data_catalog.save(outputs, node_["outputs"])
 
     # logger.info("Running preprocess_companies")
     # processed_companies = preprocess_companies(data_catalog.load("companies"))
