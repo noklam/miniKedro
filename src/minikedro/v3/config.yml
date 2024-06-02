@@ -9,8 +9,6 @@ reviews:
 shuttles:
   type: pandas.ExcelDataset
   filepath: ${_base_folder}/01_raw/shuttles.xlsx
-  load_args:
-    engine: openpyxl
 
 preprocessed_companies:
   type: pandas.ParquetDataset
@@ -25,16 +23,3 @@ model_input_table:
   filepath: ${_base_folder}/03_primary/model_input_table.pq
 
 _base_folder: data
-
-
-
-
-
-companies:
-  filepath: ${_base_folder}/01_raw/companies.csv
-
-reviews:
-  filepath: ${_base_folder}/01_raw/reviews.csv
-
-shuttles:
-  filepath: ${_base_folder}/01_raw/shuttles.xlsx

@@ -1,4 +1,4 @@
-from minikedro import DataCatalog
+from minikedro.v3 import DataCatalog
 
 
 if __name__ == "__main__":
@@ -19,52 +19,21 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    config = {
-        "companies": {
-            "filepath": "${_base_folder}/01_raw/companies.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "reviews": {
-            "filepath": "${_base_folder}/01_raw/reviews.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "shuttles": {
-            "filepath": "${_base_folder}/01_raw/shuttles.xlsx",
-            "type": "pandas.ExcelDataset",
-        },
-        "_base_folder": "data",
-        "preprocessed_companies": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_companies.pq",
-        },
-        "preprocessed_shuttles": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_shuttles.pq",
-        },
-        "model_input_table": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/03_primary/model_input_table.pq",
-        },
-    }
     from minikedro.v4 import ConfigLoader, DataCatalog
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("src/minikedro/v4/config.yml")
     data_catalog = DataCatalog(config_loader.data)
 
-    companies = data_catalog.load("companies")
-    reviews = data_catalog.load("reviews")
-    shuttles = data_catalog.load("shuttles")
-
     logger.info("Running preprocess_companies")
-    processed_companies = preprocess_companies(companies)
+    processed_companies = preprocess_companies(data_catalog.load("companies"))
     data_catalog.save(processed_companies, "preprocessed_companies")
 
-    logger.info("Running shuttles")
-    processed_shuttles = preprocess_shuttles(shuttles)
+    logger.info("Running preprocess_shuttles")
+    processed_shuttles = preprocess_shuttles(data_catalog.load("reviews"))
     data_catalog.save(processed_companies, "preprocessed_shuttles")
 
     logger.info("Running create_model_input_table")
     model_input_table = create_model_input_table(
-        processed_shuttles, processed_companies, reviews
+        processed_shuttles, processed_companies, data_catalog.load("shuttles")
     )
     data_catalog.save(processed_companies, "model_input_table")

@@ -46,32 +46,31 @@ if __name__ == "__main__":
             "filepath": "${_base_folder}/03_primary/model_input_table.pq",
         },
     }
-    from minikedro.v4 import ConfigLoader, DataCatalog
+    from minikedro.v6 import ConfigLoader, DataCatalog, pipeline, node
 
     config_loader = ConfigLoader(config)
     data_catalog = DataCatalog(config_loader.data)
 
-    # companies = data_catalog.load("companies")
-    # shuttles = data_catalog.load("shuttles")
-    # reviews = data_catalog.load("reviews")
-
-    steps = [
-        {
+    nodes = pipeline([
+    node(**{
             "func": preprocess_companies,
             "inputs": "companies",
             "outputs": "preprocessed_companies",
-        },
-        {
+        }
+    ),
+    node(**{
             "func": preprocess_shuttles,
             "inputs": "shuttles",
             "outputs": "preprocessed_shuttles",
-        },
-        {
+        }
+    ),
+    node(**{
             "func": create_model_input_table,
             "inputs": ["preprocessed_shuttles", "preprocessed_companies", "reviews"],
             "outputs": "model_input_table",
-        },
-    ]
+        }
+    )
+    ])
 
     for step in steps:
         func = step["func"]

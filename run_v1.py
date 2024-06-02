@@ -21,13 +21,10 @@ if __name__ == "__main__":
         "reviews": {"filepath": "data/01_raw/reviews.csv"},
         "shuttles": {"filepath": "data/01_raw/shuttles.xlsx"},
     }
-    from minikedro.v1 import ConfigLoader
 
-    config_loader = ConfigLoader(config)
-
-    companies = pd.read_csv(config_loader["companies"]["filepath"])
-    reviews = pd.read_csv(config_loader["reviews"]["filepath"])
-    shuttles = pd.read_excel(config_loader["shuttles"]["filepath"])
+    companies = pd.read_csv(config["companies"]["filepath"])
+    reviews = pd.read_csv(config["reviews"]["filepath"])
+    shuttles = pd.read_excel(config["shuttles"]["filepath"])
 
     logger.info("Running preprocess_companies")
     processed_companies = preprocess_companies(companies)

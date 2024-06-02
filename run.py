@@ -16,12 +16,10 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    # Data IO
     companies = pd.read_csv("data/01_raw/companies.csv")
     reviews = pd.read_csv("data/01_raw/reviews.csv")
     shuttles = pd.read_excel("data/01_raw/shuttles.xlsx")
 
-    # Compute
     logger.info("Running preprocess_companies")
     processed_companies = preprocess_companies(companies)
     logger.info("Running preprocess_shuttles")

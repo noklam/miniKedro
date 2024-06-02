@@ -1,0 +1,10 @@
+companies:
+  filepath: ${_base_folder}/01_raw/companies.csv
+
+reviews:
+  filepath: ${_base_folder}/01_raw/reviews.csv
+
+shuttles:
+  filepath: ${_base_folder}/01_raw/shuttles.xlsx
+
+_base_folder: data

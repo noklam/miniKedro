@@ -1,0 +1,9 @@
+
+companies:
+  filepath: data/01_raw/companies.csv
+
+reviews:
+  filepath: data/01_raw/reviews.csv
+
+shuttles:
+  filepath: data/01_raw/shuttles.xlsx

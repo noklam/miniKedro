@@ -1,4 +1,4 @@
-from minikedro import DataCatalog
+from minikedro.v3 import DataCatalog
 
 
 if __name__ == "__main__":
@@ -19,24 +19,9 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    config = {
-        "companies": {
-            "filepath": "${_base_folder}/01_raw/companies.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "reviews": {
-            "filepath": "${_base_folder}/01_raw/reviews.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "shuttles": {
-            "filepath": "${_base_folder}/01_raw/shuttles.xlsx",
-            "type": "pandas.ExcelDataset",
-        },
-        "_base_folder": "data",
-    }
     from minikedro.v3 import ConfigLoader, DataCatalog
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("src/minikedro/v3/config.yml")
     data_catalog = DataCatalog(config_loader.data)
 
     companies = data_catalog.load("companies")
@@ -45,10 +30,8 @@ if __name__ == "__main__":
 
     logger.info("Running preprocess_companies")
     processed_companies = preprocess_companies(companies)
-
-    logger.info("Running shuttles")
+    logger.info("Running preprocess_shuttles")
     processed_shuttles = preprocess_shuttles(shuttles)
-
     logger.info("Running create_model_input_table")
     model_input_table = create_model_input_table(
         processed_shuttles, processed_companies, reviews

@@ -3,13 +3,16 @@
 Reimplementing something is one of the best way to learn. This is a minimalistic implementation of Kedro (inspired by minGPT by Karpathy).
 
 ## Structure
-The repository is a clone of the standard spaceflights repository with two additional files:
+The repository is a clone of the standard spaceflights repository with some additional files:
+
+Script: `run.py`
+Module: `src/minikedro/v2/__init__.py
 - run_v1.py
-- minikedro.v1.py
+- `src/minikedro/v1/__init__.py
 
-In each step, you would run different versions of `run_vx.py` and it will use the class defined in `minikedro.vx.py`. For example, there is no changes in class from v4 to v5 in `minikedro`, thus you will only find `v4` folder but no `v5` folder.
+In each step, you would run different versions of `run_vx.py` and it will use the class defined in `minikedro.vx.py`. For example, when you are running `run_v1.py`, you should read `src/minikedor_v1/__init__.py`
 
-Each step I try to refactor part of the script and introduce a new component or a new feature for existing component. By the end you will get something resemble Kedro with a basic set of feature.
+Each step I try to refactor part of the script and introduce a new feature from Kedro. By the end you will get something resemble Kedro with a basic set of features.
 
 There is also a `dataset.ipynb` to demo how dataset works (out of scope)
 
@@ -28,36 +31,30 @@ The best way to understand the changes are open this repository in an IDE and co
 ## run.py
 The basic structure of a script without any Kedro
 
-## run_v1.py
-- Add `ConfigLoader` and extract configuration to a dictionary.
+## run_v1.py - Extract Configuration
+-  Extract configuration to a dictionary.
 
-## run_v2.py
-- Replace shared config with template value `${_base_folder}` with enhanced `ConfigLoader`
+## run_v2.py - Introduce ConfigLoader
+- Replace shared config with template value `${_base_folder}` with  `ConfigLoader`
 
-## run_v3.py
+## run_v3.py - Introduce Dataset and DataCatalog
 - `dataset.ipynb` to explain how `kedro-datasets` works and demonstrate the I/O capability (`save` and `load` interface)
-- Add `DataCatalog` with the ability to `load`
+- Add `DataCatalog` with the ability to `load` and `save`
 
-## run_v4.py
-- Add `save` to `DataCatalog` and actually save data in the script as well.
-
-## run_v5.py
+## run_v4.py - Load data only when it's needed
 - Extract Configuration to a `steps` as a list of dictionary
+- Save the intermediate data as dataset too
 
-## run_v6.py
+## run_v5.py - Restructure the functions call into a dictionary
 - Make use of the `steps` variable and loop through the steps.
 
-## run_v7.py
+## run_v6.py - Introduce Pipeline and Nodes
 - Introduce a thin `list` wrapper called `pipeline` and `step` wrapper called `nodes`
 - Rename `steps` as `nodes`, `step` as `node_`
 
-## run_v8.py
+## run_v7.py - Introduce Hook
+
+## run_v8.py - Replace `kedro` import with `import minikedro.v8 as kedro`
 - Replace `pipeline` from `kedro` with `minikedro.v7`
 - Replace the configuration dictionary and load it from `base/conf/catalog.yml` instead.
-
-Lines of code:
-- `run_v8.py`: 41
-- `minikedro.v7.__init__.py`: 38
-
-## run_v9.py (Bonus)
-- Introduce Hooks
+- Replace the `pipeline` from script and move it to `pipeline.py`

@@ -16,15 +16,9 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    config = {
-        "companies": {"filepath": "${_base_folder}/01_raw/companies.csv"},
-        "reviews": {"filepath": "${_base_folder}/01_raw/reviews.csv"},
-        "shuttles": {"filepath": "${_base_folder}/01_raw/shuttles.xlsx"},
-        "_base_folder": "data",
-    }
     from minikedro.v2 import ConfigLoader
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("src/minikedro/v2/config.yml")
 
     companies = pd.read_csv(config_loader["companies"]["filepath"])
     reviews = pd.read_csv(config_loader["reviews"]["filepath"])

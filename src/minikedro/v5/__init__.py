@@ -4,9 +4,8 @@ import importlib
 
 
 class ConfigLoader(UserDict):
-    def __init__(self, filepath):
-        config = OmegaConf.load(filepath)
-        self.data = OmegaConf.create(config)
+    def __init__(self, data: dict):
+        self.data = OmegaConf.create(data)
 
 
 class DataCatalog:
@@ -27,3 +26,6 @@ class DataCatalog:
 
     def load(self, dataset_name):
         return self.datasets[dataset_name].load()  # CSVDataset.load()
+
+    def save(self, data, dataset_name):
+        self.datasets[dataset_name].save(data)
