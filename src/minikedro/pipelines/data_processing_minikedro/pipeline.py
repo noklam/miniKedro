@@ -1,5 +1,4 @@
-from minikedro.v7 import node, pipeline
-
+from minikedro.v8 import node, pipeline
 from minikedro.pipelines.data_processing.nodes import (
     create_model_input_table,
     preprocess_companies,

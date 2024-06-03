@@ -40,3 +40,28 @@ class node(UserDict):
     def __init__(self, func, inputs, outputs, name=None):
         data = {"func": func, "inputs": inputs, "outputs": outputs, "name": name}
         super().__init__(data)
+
+
+class Hook:
+    def __init__(
+        self,
+        before_node_run: Callable | None = None,
+        after_node_run: Callable | None = None,
+    ):
+        self.before_node_run = before_node_run
+        self.after_node_run = after_node_run
+
+
+class Hooks:
+    def __init__(self, hooks: list[Hook]):
+        self.hooks = hooks
+
+    def before_node_run(self):
+        for hook in self.hooks:
+            if hook.before_node_run:
+                hook.before_node_run()
+
+    def after_node_run(self):
+        for hook in self.hooks:
+            if hook.after_node_run:
+                hook.after_node_run()

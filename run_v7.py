@@ -1,6 +1,3 @@
-from minikedro import DataCatalog
-
-
 if __name__ == "__main__":
     print("Start Pipeline")
     from minikedro.pipelines.data_processing.nodes import (
@@ -19,73 +16,40 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    config = {
-        "companies": {
-            "filepath": "${_base_folder}/01_raw/companies.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "reviews": {
-            "filepath": "${_base_folder}/01_raw/reviews.csv",
-            "type": "pandas.CSVDataset",
-        },
-        "shuttles": {
-            "filepath": "${_base_folder}/01_raw/shuttles.xlsx",
-            "type": "pandas.ExcelDataset",
-        },
-        "_base_folder": "data",
-        "preprocessed_companies": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_companies.pq",
-        },
-        "preprocessed_shuttles": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/02_intermediate/preprocessed_shuttles.pq",
-        },
-        "model_input_table": {
-            "type": "pandas.ParquetDataset",
-            "filepath": "${_base_folder}/03_primary/model_input_table.pq",
-        },
-    }
-    from minikedro.v7 import ConfigLoader, DataCatalog, pipeline, node
+    from minikedro.v7 import ConfigLoader, DataCatalog, pipeline, node, Hooks, Hook
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("src/minikedro/v7/config.yml")
     data_catalog = DataCatalog(config_loader.data)
 
-    # companies = data_catalog.load("companies")
-    # shuttles = data_catalog.load("shuttles")
-    # reviews = data_catalog.load("reviews")
-
-    nodes = pipeline(
-        [
-            node(
-                **{
-                    "func": preprocess_companies,
-                    "inputs": "companies",
-                    "outputs": "preprocessed_companies",
-                }
-            ),
-            node(
-                **{
-                    "func": preprocess_shuttles,
-                    "inputs": "shuttles",
-                    "outputs": "preprocessed_shuttles",
-                }
-            ),
-            node(
-                **{
-                    "func": create_model_input_table,
-                    "inputs": [
-                        "preprocessed_shuttles",
-                        "preprocessed_companies",
-                        "reviews",
-                    ],
-                    "outputs": "model_input_table",
-                }
-            ),
-        ]
+    nodes = pipeline([
+    node(**{
+            "func": preprocess_companies,
+            "inputs": "companies",
+            "outputs": "preprocessed_companies",
+        }
+    ),
+    node(**{
+            "func": preprocess_shuttles,
+            "inputs": "shuttles",
+            "outputs": "preprocessed_shuttles",
+        }
+    ),
+    node(**{
+            "func": create_model_input_table,
+            "inputs": ["preprocessed_shuttles", "preprocessed_companies", "reviews"],
+            "outputs": "model_input_table",
+        }
     )
+    ])
 
+    # Hook
+    MLflowHook = Hook(before_node_run=lambda: print("MLflow: logging experiment"))
+    ObservabilityHook = Hook(after_node_run=lambda: print("Telemetry: sending telemetry"))
+
+    hooks = Hooks([MLflowHook, ObservabilityHook])
     for node_ in nodes:
+        hooks.before_node_run()
+
         func = node_["func"]
         logger.info(f"Running {func.__name__}")
         inputs = node_["inputs"]
@@ -95,16 +59,4 @@ if __name__ == "__main__":
         outputs = func(*inputs)
         data_catalog.save(outputs, node_["outputs"])
 
-    # logger.info("Running preprocess_companies")
-    # processed_companies = preprocess_companies(data_catalog.load("companies"))
-    # data_catalog.save(processed_companies, "preprocessed_companies")
-
-    # logger.info("Running shuttles")
-    # processed_shuttles = preprocess_shuttles(data_catalog.load("shuttles"))
-    # data_catalog.save(processed_companies, "preprocessed_shuttles")
-
-    # logger.info("Running create_model_input_table")
-    # model_input_table = create_model_input_table(
-    #     processed_shuttles, processed_companies, data_catalog.load("reviews")
-    # )
-    # data_catalog.save(processed_companies, "model_input_table")
+        hooks.after_node_run()

@@ -8,7 +8,6 @@ if __name__ == "__main__":
     from rich.logging import RichHandler
     import logging
     import pandas as pd
-    import yaml
 
     logging.basicConfig(
         level=logging.INFO,
@@ -17,19 +16,23 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger("minikedro")
 
-    with open("conf/base/catalog.yml") as f:
-        config = yaml.safe_load(f)
-    from minikedro.v7 import ConfigLoader, DataCatalog
+    from minikedro.v8 import ConfigLoader, DataCatalog, pipeline, node, Hooks, Hook
 
-    config_loader = ConfigLoader(config)
+    config_loader = ConfigLoader("conf/base/catalog.yml")
     data_catalog = DataCatalog(config_loader.data)
 
     from minikedro.pipelines.data_processing_minikedro import create_pipeline
 
-    pipeline_ = create_pipeline()
+    nodes = create_pipeline()
 
-    # Kedro Runner
-    for node_ in pipeline_:
+    # Hook
+    MLflowHook = Hook(lambda: print("MLflow: logging experiment"))
+    ObservabilityHook = Hook(lambda: print("Telemetry: sending telemetry"))
+
+    hooks = Hooks([MLflowHook, ObservabilityHook])
+    for node_ in nodes:
+        hooks.before_node_run()
+
         func = node_["func"]
         logger.info(f"Running {func.__name__}")
         inputs = node_["inputs"]
@@ -38,3 +41,5 @@ if __name__ == "__main__":
         inputs = [data_catalog.load(input_) for input_ in inputs]
         outputs = func(*inputs)
         data_catalog.save(outputs, node_["outputs"])
+
+        hooks.after_node_run()

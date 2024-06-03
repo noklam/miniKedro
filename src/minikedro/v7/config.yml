@@ -9,8 +9,6 @@ reviews:
 shuttles:
   type: pandas.ExcelDataset
   filepath: ${_base_folder}/01_raw/shuttles.xlsx
-  load_args:
-    engine: openpyxl
 
 preprocessed_companies:
   type: pandas.ParquetDataset
